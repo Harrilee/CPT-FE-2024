@@ -36,6 +36,9 @@ export class requester {
             error => {
                 console.log(error)
                 if (error.response) {
+                    if (error.response.status === 401) {
+                        localStorage.removeItem("access_token")
+                    }
                     if ([400, 401, 403].includes(error.response.status)) {
                         window.location.href = `/error/${error.response.status}`
                     }
@@ -94,4 +97,9 @@ export function enableAutoSave(formId) {
         }
         window.localStorage.setItem(`__autosave-${window.location}`, JSON.stringify(data))
     })
+
+    if (savedData) {
+        return JSON.parse(savedData)
+    }
+
 }
